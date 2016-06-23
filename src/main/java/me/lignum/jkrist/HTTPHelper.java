@@ -19,9 +19,6 @@ class HTTPHelper {
 			
 			switch (lurl.getProtocol().toLowerCase()) {
 			case "https":
-				conn = (HttpsURLConnection)lurl.openConnection();
-				break;
-				
 			case "http":
 				conn = (HttpURLConnection)lurl.openConnection();
 				break;
