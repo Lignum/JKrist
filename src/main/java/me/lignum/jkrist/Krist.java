@@ -50,6 +50,11 @@ public class Krist {
 		return new Block(obj.getJSONObject("block"));
 	}
 
+	public long getWork() {
+		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/work"));
+		return obj.getLong("work");
+	}
+
 	/**
 	 * @return The current Krist MOTD.
 	 */
