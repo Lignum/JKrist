@@ -1,15 +1,12 @@
 package me.lignum.jkrist;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.json.JSONObject;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 
 class HTTPHelper {
 	private static HttpURLConnection getConnection(String url) {
@@ -51,7 +48,8 @@ class HTTPHelper {
 			while ((line = br.readLine()) != null) {
 				response += line + "\n";
 			}
-			
+
+			br.close();
 			return response;
 		} catch (ProtocolException e) {
 			e.printStackTrace();
@@ -59,6 +57,40 @@ class HTTPHelper {
 			e.printStackTrace();
 		}
 		
+		return null;
+	}
+
+	public static String post(String url, JSONObject body) {
+		HttpURLConnection conn = getConnection(url);
+
+		try {
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+
+			String jsonBody = body.toString(0);
+			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("Content-Length", String.valueOf(jsonBody.length()));
+
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+			bw.write(jsonBody);
+			bw.close();
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String response = "";
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				response += line + "\n";
+			}
+
+			br.close();
+			return response;
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }

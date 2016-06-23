@@ -24,7 +24,32 @@ public class Krist {
 	public Krist() {
 		this(DEFAULT_NODE);
 	}
-	
+
+	/**
+	 * Submits a block.
+	 * @param address The address to send rewards to.
+	 * @param nonce The nonce.
+	 * @return The mined {@link me.lignum.jkrist.Block}.
+	 * @throws KristAPIException Can be thrown if the nonce is too long.
+     */
+	public Block submitBlock(String address, String nonce) throws KristAPIException {
+		JSONObject request = new JSONObject();
+		request.put("address", address);
+		request.put("nonce", nonce);
+
+		JSONObject obj = new JSONObject(HTTPHelper.post(node + "/submit", request));
+
+		if (!obj.getBoolean("ok")) {
+			throw new KristAPIException(obj.getString("error"));
+		}
+
+		if (!obj.getBoolean("success")) {
+			return null;
+		}
+
+		return new Block(obj.getJSONObject("block"));
+	}
+
 	/**
 	 * @return The current Krist MOTD.
 	 */
@@ -139,5 +164,13 @@ public class Krist {
 	
 	public Block[] getBlocks() {
 		return getBlocks(DEFAULT_LIST_CAP);
+	}
+
+	public Block[] getLowestBlocks(int cap) {
+		return getList(cap, "/blocks/lowest", "blocks", Block.class);
+	}
+
+	public Block[] getLowestBlocks() {
+		return getLowestBlocks(DEFAULT_LIST_CAP);
 	}
 }
