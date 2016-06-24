@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class Krist {
 	/** The default krist node to use */
-	private static final String DEFAULT_NODE = "https://krist.ceriat.net";
+	private static final String DEFAULT_NODE = "http://krist.ceriat.net";
 	
 	private static final int DEFAULT_LIST_CAP = 50;
 	
