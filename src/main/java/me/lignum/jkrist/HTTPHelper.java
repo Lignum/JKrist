@@ -90,14 +90,4 @@ class HTTPHelper {
 
 		return null;
 	}
-
-	public static String encodeURL(String s) {
-		try {
-			return URLEncoder.encode(s, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 }
