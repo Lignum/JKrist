@@ -34,8 +34,8 @@ public class Krist {
      */
 	public Block submitBlock(String address, String nonce) throws KristAPIException {
 		JSONObject request = new JSONObject();
-		request.put("address", address);
-		request.put("nonce", nonce);
+		request.put("address", HTTPHelper.encodeURL(address));
+		request.put("nonce", HTTPHelper.encodeURL(nonce));
 
 		JSONObject obj = new JSONObject(HTTPHelper.post(node + "/submit", request));
 
@@ -76,7 +76,7 @@ public class Krist {
 	 * @return An {@link me.lignum.jkrist.Address} object. Or <code>null</code> if no such address was found.
 	 */
 	public Address getAddress(String address) {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/addresses/" + address));
+		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/addresses/" + HTTPHelper.encodeURL(address)));
 		return new Address(obj.getJSONObject("address"));
 	}
 	

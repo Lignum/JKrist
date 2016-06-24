@@ -3,10 +3,7 @@ package me.lignum.jkrist;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import java.net.*;
 
 class HTTPHelper {
 	private static HttpURLConnection getConnection(String url) {
@@ -88,6 +85,16 @@ class HTTPHelper {
 		} catch (ProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static String encodeURL(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
