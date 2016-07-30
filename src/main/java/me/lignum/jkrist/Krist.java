@@ -31,7 +31,7 @@ public class Krist {
 	 * @param nonce The nonce.
 	 * @return The mined {@link me.lignum.jkrist.Block}.
 	 * @throws KristAPIException Can be thrown if the nonce is too long.
-     */
+     	*/
 	public Block submitBlock(String address, String nonce) throws KristAPIException {
 		JSONObject request = new JSONObject();
 		request.put("address", address);
@@ -48,6 +48,29 @@ public class Krist {
 		}
 
 		return new Block(obj.getJSONObject("block"));
+	}
+	
+	/**
+	 * Makes a transaction.
+	 * @param privatekey The privatekey of your address.
+	 * @param to The address to send Krist to.
+	 * @param amount The amount of Krist to send.
+	 * @return The sent {@link me.lignum.jkrist.Transaction}.
+	 * @throws KristAPIException Can be thrown.
+     	*/
+	public Transaction makeTransaction(String privatekey, String to, int amount) throws KristAPIException {
+		JSONObject request = new JSONObject();
+		request.put("privatekey", privatekey);
+		request.put("to", to);
+		request.put("amount", amount);
+
+		JSONObject obj = new JSONObject(HTTPHelper.post(node + "/transactions", request));
+
+		if (!obj.getBoolean("ok")) {
+			throw new KristAPIException(obj.getString("error"));
+		}
+
+		return new Transaction(obj.getJSONObject("transaction"));
 	}
 
 	public long getWork() {
