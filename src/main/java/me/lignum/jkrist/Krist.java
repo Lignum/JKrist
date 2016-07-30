@@ -58,7 +58,7 @@ public class Krist {
 	 * @return The sent {@link me.lignum.jkrist.Transaction}.
 	 * @throws KristAPIException Can be thrown.
      	*/
-	public Block makeTransaction(String privatekey, String to, int amount) throws KristAPIException {
+	public Transaction makeTransaction(String privatekey, String to, int amount) throws KristAPIException {
 		JSONObject request = new JSONObject();
 		request.put("privatekey", privatekey);
 		request.put("to", to);
