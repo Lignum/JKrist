@@ -37,17 +37,23 @@ public class Krist {
 		request.put("address", address);
 		request.put("nonce", nonce);
 
-		JSONObject obj = new JSONObject(HTTPHelper.post(node + "/submit", request));
+		String json = HTTPHelper.post(node + "/submit", request);
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
 
 		if (!obj.getBoolean("ok")) {
-			throw new KristAPIException(obj.getString("error"));
+			throw new KristAPIException(obj.optString("error", "N/A"));
 		}
 
 		if (!obj.getBoolean("success")) {
 			return null;
 		}
 
-		return new Block(obj.getJSONObject("block"));
+		return obj.has("block") ? new Block(obj.getJSONObject("block")) : null;
 	}
 	
 	/**
