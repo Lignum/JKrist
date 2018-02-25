@@ -1,5 +1,6 @@
 package me.lignum.jkrist;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.xml.bind.DatatypeConverter;
@@ -41,5 +42,41 @@ public class Address extends KristObject {
 	
 	public Date getFirstSeen() {
 		return firstSeen;
+	}
+
+	public static String makeKristWalletPrivateKey(String password) {
+		return Utils.sha256("KRISTWALLET" + password) + "-000";
+	}
+
+	public static char byteToHexChar(int inp) {
+		int b = 48 + inp / 7;
+		return (char)(b + 39 > 122 ? 102 : b > 57 ? b + 39 : b);
+	}
+
+	public static String makeV2Address(String pkey) {
+		StringBuilder address = new StringBuilder("k");
+		String hash = Utils.sha256(Utils.sha256(pkey));
+		String[] proteins = new String[9];
+
+		for (int i = 0; i < proteins.length; i++) {
+			proteins[i] = hash.substring(0, 2);
+			hash = Utils.sha256(Utils.sha256(hash));
+		}
+
+		for (int i = 0; i < 9;) {
+			String pair = hash.substring(i * 2, (i * 2) + 2);
+			int index = Integer.parseInt(pair, 16) % 9;
+
+			if (proteins[index] == null) {
+				hash = Utils.sha256(Utils.sha256(hash));
+			} else {
+				int protein = Integer.parseInt(proteins[index], 16);
+				address.append(byteToHexChar(protein));
+				proteins[index] = null;
+				i++;
+			}
+		}
+
+		return address.toString();
 	}
 }
