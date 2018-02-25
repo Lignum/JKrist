@@ -99,13 +99,25 @@ public class Krist {
 	 * @return An {@link me.lignum.jkrist.Address} object. Or <code>null</code> if no such address was found.
 	 */
 	public Address getAddress(String address) {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/addresses/" + address));
+		String json = HTTPHelper.get(node + "/addresses/" + address);
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
 		return new Address(obj.getJSONObject("address"));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private <T extends KristObject> T[] getList(int cap, String path, String elementsAttrib, Class<T> elemClass) {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + path + "?limit=" + cap));
+		String json = HTTPHelper.get(node + path + "?limit=" + cap);
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
 		T[] list = (T[]) Array.newInstance(elemClass, obj.getInt("count"));
 		
 		JSONArray elements = obj.getJSONArray(elementsAttrib);
@@ -115,7 +127,7 @@ public class Krist {
 			T kObject = null;
 			
 			try {
-				kObject = (T)elemClass.getConstructor(JSONObject.class).newInstance(element);
+				kObject = elemClass.getConstructor(JSONObject.class).newInstance(element);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -148,7 +160,13 @@ public class Krist {
 	}
 	
 	public Transaction getTransaction(int id) {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/transactions/" + id));
+		String json = HTTPHelper.get(node + "/transactions/" + id);
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
 		return new Transaction(obj.getJSONObject("transaction"));
 	}
 	
@@ -169,12 +187,24 @@ public class Krist {
 	}
 	
 	public Block getBlock(int height) {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/blocks/" + height));
+		String json = HTTPHelper.get(node + "/blocks/" + height);
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
 		return new Block(obj.getJSONObject("block"));
 	}
 	
 	public Block getLastBlock() {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/blocks/last"));
+		String json = HTTPHelper.get(node + "/blocks/last");
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
 		return new Block(obj.getJSONObject("block"));
 	}
 	
