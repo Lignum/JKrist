@@ -2,8 +2,6 @@ package me.lignum.jkrist;
 
 import java.util.Date;
 
-import javax.xml.bind.DatatypeConverter;
-
 import org.json.JSONObject;
 
 public class MOTD extends KristObject {
@@ -18,7 +16,8 @@ public class MOTD extends KristObject {
 		this.message = obj.getString("motd");
 		this.psa = obj.getString("psa");
 		this.schroedingersCatState = obj.getString("schrodingers_cat");
-		this.modifiedDate = DatatypeConverter.parseDateTime(obj.getString("set")).getTime();
+
+		this.modifiedDate = Utils.parseISO8601(obj.getString("set"));
 	}
 	
 	public String getMessage() {

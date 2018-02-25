@@ -1,9 +1,6 @@
 package me.lignum.jkrist;
 
-import java.util.Arrays;
 import java.util.Date;
-
-import javax.xml.bind.DatatypeConverter;
 
 import org.json.JSONObject;
 
@@ -21,7 +18,7 @@ public class Address extends KristObject {
 		this.balance = addr.getLong("balance");
 		this.totalIn = addr.getLong("totalin");
 		this.totalOut = addr.getLong("totalout");
-		this.firstSeen = DatatypeConverter.parseDateTime(addr.getString("firstseen")).getTime();
+		this.firstSeen = Utils.parseISO8601(addr.getString("firstseen"));
 	}
 	
 	public String getName() {

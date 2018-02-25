@@ -3,6 +3,8 @@ package me.lignum.jkrist;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Formatter;
 
 class Utils {
@@ -26,5 +28,9 @@ class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    static Date parseISO8601(String date) {
+        return Date.from(Instant.parse(date));
     }
 }

@@ -2,8 +2,6 @@ package me.lignum.jkrist;
 
 import java.util.Date;
 
-import javax.xml.bind.DatatypeConverter;
-
 import org.json.JSONObject;
 
 public class Block extends KristObject {
@@ -24,7 +22,7 @@ public class Block extends KristObject {
 		this.shortHash = block.getString("short_hash");
 		this.value = block.getInt("value");
 		this.difficulty = block.getInt("difficulty");
-		this.time = DatatypeConverter.parseDateTime(block.getString("time")).getTime();
+		this.time = Utils.parseISO8601(block.getString("time"));
 	}
 	
 	public long getHeight() {
