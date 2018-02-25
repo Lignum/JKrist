@@ -64,33 +64,63 @@ public class Krist {
 		request.put("to", to);
 		request.put("amount", amount);
 
-		JSONObject obj = new JSONObject(HTTPHelper.post(node + "/transactions", request));
+		String json = HTTPHelper.post(node + "/transactions", request);
 
-		if (!obj.getBoolean("ok")) {
-			throw new KristAPIException(obj.getString("error"));
+		if (json == null) {
+			return null;
 		}
 
-		return new Transaction(obj.getJSONObject("transaction"));
+		JSONObject obj = new JSONObject(json);
+
+		if (!obj.getBoolean("ok")) {
+			throw new KristAPIException(obj.optString("error", "N/A"));
+		}
+
+		return obj.has("transaction") ? new Transaction(obj.getJSONObject("transaction")) : null;
 	}
 
 	public long getWork() {
-		JSONObject obj = new JSONObject(HTTPHelper.get(node + "/work"));
-		return obj.getLong("work");
+		String json = HTTPHelper.get(node + "/work");
+
+		if (json == null) {
+			return -1;
+		}
+
+		JSONObject obj = new JSONObject(json);
+		return obj.optLong("work", -1);
 	}
 
 	/**
 	 * @return The current Krist MOTD.
 	 */
 	public MOTD getMOTD() {
-		return new MOTD(new JSONObject(HTTPHelper.get(node + "/motd")));
+		String json = HTTPHelper.get(node + "/motd");
+
+		if (json == null) {
+			return null;
+		}
+
+		return new MOTD(new JSONObject(json));
 	}
 	
 	public int getBaseBlockReward() {
-		return new JSONObject(HTTPHelper.get(node + "/blocks/basevalue")).getInt("base_value");
+		String json = HTTPHelper.get(node + "/blocks/basevalue");
+
+		if (json == null) {
+			return -1;
+		}
+
+		return new JSONObject(json).optInt("base_value", -1);
 	}
 	
 	public int getBlockReward() {
-		return new JSONObject(HTTPHelper.get(node + "/blocks/value")).getInt("value");
+		String json = HTTPHelper.get(node + "/blocks/value");
+
+		if (json == null) {
+			return -1;
+		}
+
+		return new JSONObject(json).optInt("value", -1);
 	}
 	
 	/**
@@ -106,7 +136,7 @@ public class Krist {
 		}
 
 		JSONObject obj = new JSONObject(json);
-		return new Address(obj.getJSONObject("address"));
+		return obj.has("address") ? new Address(obj.getJSONObject("address")) : null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -118,8 +148,12 @@ public class Krist {
 		}
 
 		JSONObject obj = new JSONObject(json);
+
+		if (!obj.has(elementsAttrib)) {
+			return null;
+		}
+
 		T[] list = (T[]) Array.newInstance(elemClass, obj.getInt("count"));
-		
 		JSONArray elements = obj.getJSONArray(elementsAttrib);
 		
 		for (int i = 0; i < elements.length(); ++i) {
@@ -167,7 +201,7 @@ public class Krist {
 		}
 
 		JSONObject obj = new JSONObject(json);
-		return new Transaction(obj.getJSONObject("transaction"));
+		return obj.has("transaction") ? new Transaction(obj.getJSONObject("transaction")) : null;
 	}
 	
 	public Transaction[] getTransactions(int cap) {
@@ -194,7 +228,7 @@ public class Krist {
 		}
 
 		JSONObject obj = new JSONObject(json);
-		return new Block(obj.getJSONObject("block"));
+		return obj.has("block") ? new Block(obj.getJSONObject("block")) : null;
 	}
 	
 	public Block getLastBlock() {
@@ -205,7 +239,7 @@ public class Krist {
 		}
 
 		JSONObject obj = new JSONObject(json);
-		return new Block(obj.getJSONObject("block"));
+		return obj.has("block") ? new Block(obj.getJSONObject("block")) : null;
 	}
 	
 	public Block[] getRecentBlocks(int cap) {
