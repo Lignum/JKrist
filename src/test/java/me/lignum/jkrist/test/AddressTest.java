@@ -38,7 +38,22 @@ public class AddressTest {
 
 	@Test
 	public void v2AddressGenTest() {
-		assertEquals("kxopdv8xaf", Address.makeV2Address(Address.makeKristWalletPrivateKey("0000")));
+		assertEquals("krij1vi64t", Address.makeV2Address("MEgweVPtnHmqNvYQ"));
+		assertEquals("kjahc1eyzn", Address.makeV2Address("vdJrfcTFQzpNjLtn"));
+		assertEquals("kevsn298oq", Address.makeV2Address("FBvRepWVrZzGyNtP"));
+		assertEquals("kci2tq0iex", Address.makeV2Address("vCFyUDjPfTaBYmkM"));
+		assertEquals("kk40e93il0", Address.makeV2Address("cQyqXHzVfmKFsYnx"));
+		assertEquals("k5r343waw5", Address.makeV2Address("FuhkyXTMAKvpdjRr"));
+		assertEquals("k233g8rjvn", Address.makeV2Address("MCHvXjpGPYqVQrWF"));
+		assertEquals("kvltqdv2y3", Address.makeV2Address("PHTsAJVaLhkgzNup"));
+		assertEquals("knezaebvyv", Address.makeV2Address("GzKkejqmxChMpRVb"));
+		assertEquals("kstmmy6h5h", Address.makeV2Address("NAjCQUktfbMFJpsK"));
+		assertEquals("kbf2ewjhqm", Address.makeV2Address("MjqyHYEPgzKCTpuS"));
+		assertEquals("k4b1anpiq3", Address.makeV2Address("ZgDzTyaPHRMQAGFk"));
+		assertEquals("kpebuen98o", Address.makeV2Address("wshmPEvkHDKcpBeR"));
+		assertEquals("k039hqp3n2", Address.makeV2Address("UZKnapGqYNBtAebd"));
+		assertEquals("kzv1x3rjih", Address.makeV2Address("LYzTmfCtZuMjDdWA"));
+		assertEquals("kz9n8pc35y", Address.makeV2Address("huFTJwZkjEbWNXyS"));
 	}
 
 	@Test

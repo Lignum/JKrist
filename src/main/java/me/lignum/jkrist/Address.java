@@ -47,7 +47,9 @@ public class Address extends KristObject {
 
 	public static char byteToHexChar(int inp) {
 		int b = 48 + inp / 7;
-		return (char)(b + 39 > 122 ? 102 : b > 57 ? b + 39 : b);
+		if (b > 57) b += 39;
+		if (b > 122) b = 101;
+		return (char)b;
 	}
 
 	public static String makeV2Address(String pkey) {
@@ -65,7 +67,7 @@ public class Address extends KristObject {
 			int index = Integer.parseInt(pair, 16) % 9;
 
 			if (proteins[index] == null) {
-				hash = Utils.sha256(Utils.sha256(hash));
+				hash = Utils.sha256(hash);
 			} else {
 				int protein = Integer.parseInt(proteins[index], 16);
 				address.append(byteToHexChar(protein));
