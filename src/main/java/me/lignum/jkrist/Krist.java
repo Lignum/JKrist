@@ -45,11 +45,11 @@ public class Krist {
 
 		JSONObject obj = new JSONObject(json);
 
-		if (!obj.getBoolean("ok")) {
+		if (!obj.optBoolean("ok")) {
 			throw new KristAPIException(obj.optString("error", "N/A"));
 		}
 
-		if (!obj.getBoolean("success")) {
+		if (!obj.optBoolean("success")) {
 			return null;
 		}
 
@@ -78,11 +78,31 @@ public class Krist {
 
 		JSONObject obj = new JSONObject(json);
 
-		if (!obj.getBoolean("ok")) {
+		if (!obj.optBoolean("ok")) {
 			throw new KristAPIException(obj.optString("error", "N/A"));
 		}
 
 		return obj.has("transaction") ? new Transaction(obj.getJSONObject("transaction")) : null;
+	}
+
+	public String login(String privateKey) throws KristAPIException {
+		JSONObject request = new JSONObject();
+		request.put("v", 2);
+		request.put("privatekey", privateKey);
+
+		String json = HTTPHelper.post(node + "/login", request);
+
+		if (json == null) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject(json);
+
+		if (!obj.optBoolean("ok")) {
+			throw new KristAPIException(obj.optString("error", "N/A"));
+		}
+
+		return obj.has("address") ? obj.getString("address") : null;
 	}
 
 	public long getWork() {
