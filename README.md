@@ -1,4 +1,4 @@
-# JKrist ![](https://api.travis-ci.org/Lignumm/JKrist.svg)
+# JKrist ![](https://travis-ci.org/Lignum/JKrist.svg?branch=master)
 A Java library for interfacing with the Krist API.
 
 ## Usage
