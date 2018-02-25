@@ -2,8 +2,6 @@ package me.lignum.jkrist;
 
 import java.util.Date;
 
-import javax.xml.bind.DatatypeConverter;
-
 import org.json.JSONObject;
 
 public class Transaction extends KristObject {
@@ -29,7 +27,7 @@ public class Transaction extends KristObject {
 		}
 		
 		this.value = obj.getLong("value");
-		this.time = DatatypeConverter.parseDateTime(obj.getString("time")).getTime();
+		this.time = Utils.parseISO8601(obj.getString("time"));
 		
 		if (!obj.isNull("name")) {
 			this.name = obj.getString("name");
